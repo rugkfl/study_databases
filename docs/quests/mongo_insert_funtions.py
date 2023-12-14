@@ -21,7 +21,7 @@ def mongo_insert(collection,add_fruits):   # insert 작업 진행을 위한 func
         collection.insert_one(add_fruits[i])
     return
 
-address = "mongodb://localhost:27017"
+address = "mongodb://localhost:27017"       # mongo_connect의 parameter 값
 local = "local"
 data = 'fruits'
 
