@@ -1,6 +1,3 @@
-
-
-
 def mongo_connect(address, local, data) :           # mongodb에 접속하기 위한 function
     from pymongo import MongoClient   
     mongoClient = MongoClient(address)     
