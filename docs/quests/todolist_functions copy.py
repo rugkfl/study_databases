@@ -1,18 +1,9 @@
-from pymongo import MongoClient 
-
-# ---------------------------------------------------------------------------
-
-parti = input("Input Your Name: ")
-print("ToDo List 중 하나 선택 하세요 !")
-col_todo_list = list(todo_list_connect.find({}))
-for i in range(len(col_todo_list)) :
-    if i<4 :
-        print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-    else :
-        print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-num_title = int(input("Title 번호 : "))
-input_status = input("Status : ")
-
+def mongo_connect(colname):
+    from pymongo import MongoClient    # mongodb에 접속 -> 자원에 대한 class
+    mongoClient=MongoClient("mongodb://localhost:27017/")    # database 연결
+    database=mongoClient["local"]    # collection 작업
+    collection=database[colname]    # insert 작업 진행
+    return collection
 
 
 

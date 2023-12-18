@@ -1,7 +1,7 @@
-def mongo_connect(address, local, data) :           # mongodb에 접속하기 위한 function
+def mongo_connect(data) :           # mongodb에 접속하기 위한 function
     from pymongo import MongoClient   
-    mongoClient = MongoClient(address)     
-    database = mongoClient[local]     
+    mongoClient = MongoClient("mongodb://localhost:27017")     
+    database = mongoClient["local"]     
     collection = database[data]         
     return collection          # database['local.solvingproblelm]에 데이터를 넣어야 하므로 collection 변수를 return
 
@@ -18,29 +18,30 @@ def mongo_insert(collection,add_todo):   # insert 작업 진행을 위한 functi
         collection.insert_one(add_todo[i])
     return
 
-address = "mongodb://localhost:27017"       # mongo_connect의 parameter 값
-local = "local"
-data = 'todos_list'
-
-todo_list_connect = mongo_connect(address, local, data)      # mongo_connect 함수 호출
-# quiz_list_insert = mongo_insert(todo_list_connect, todo_list)    #  mongo_connect 함수 호출
+todo_list_connect = mongo_connect('todos_list') 
+quiz_list_insert = mongo_insert(todo_list_connect, todo_list)    #  mongo_connect 함수 호출
 
 # participants insert
 user_name_list = [
      {"참여자": "참여자 1"},
      {"참여자": "참여자 2"},
-     {"참여자:" "참여자 3"}
-] 
+     {"참여자": "참여자 3"}
+]
+# user_list insert
+
+user_list = mongo_insert(mongo_connect('participants'),user_name_list)
 
 
 # participants_todos insert
-
 parti_todos_list = [
      {"todo list": "주간 보고서 작성", "Status": "완료"},
      {"todo list": "이메일 확인 및 응답", "Status": "진행 중"},
      {"todo list": "회의 준비", "Status": "진행 중"},
      {"todo list": "팀 멤버와의 1:1 면담", "Status": "진행 중"}
 ]
+
+user_todos = mongo_insert(mongo_connect('participants_todos'),user_name_list)
+
 
 # ---------------------------------------------------------------------------
 
@@ -55,83 +56,35 @@ for i in range(len(col_todo_list)) :
         print("{}. {}".format(i+1, col_todo_list[i]["title"]))
 num_title = int(input("Title 번호 : "))
 input_status = input("Status : ")
-
 str_input = input("종료 여부 : ")
-if str_input == 'q' :
-    print("------------------")
+pass
+while str_input=='q' :
     parti = input("Input Your Name: ")
-    for i in range(len(col_todo_list)) :
-        if i < 4 :
-             print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-        else :
-            print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-    num_title = int(input("Title 번호 : "))
-    input_status = input("Status : ")
-    str_input = input("종료 여부 : ")
-else : 
     print("ToDo List 중 하나 선택 하세요 !")
-    col_todo_list = list(todo_list_connect.find({}))
+    col_todo_list = list(todo_list_connect.find({},{"_id":0,"title":1}))
     for i in range(len(col_todo_list)) :
-        if i < 4 :
+        if i<4 :
             print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
         else :
             print("{}. {}".format(i+1, col_todo_list[i]["title"]))
     num_title = int(input("Title 번호 : "))
     input_status = input("Status : ")
     str_input = input("종료 여부 : ")
-    if str_input == 'q' :
-        print("------------------")
-        parti = input("Input Your Name: ")
-        for i in range(len(col_todo_list)) :
-            if i < 4 :
-                    print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-            else :
-                    print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-        num_title = int(input("Title 번호 : "))
-        input_status = input("Status : ")
-        str_input = input("종료 여부 : ")
-        if str_input == 'q' :
-            print("------------------")
-            parti = input("Input Your Name: ")
-           
-            for i in range(len(col_todo_list)) :
-                    if i < 4 :
-                        print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-                    else :
-                        print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-            num_title = int(input("Title 번호 : "))
-            input_status = input("Status : ")
-            str_input = input("종료 여부 : ")
-            if str_input == 'x' :
-                print("------------------")
-                print("프로그램이 종료되었습니다.")
-        else : 
-            print("ToDo List 중 하나 선택 하세요 !")
-            col_todo_list = list(todo_list_connect.find({}))
-            for i in range(len(col_todo_list)) :
-                if i < 4 :
-                    print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-                else :
-                    print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-            num_title = int(input("Title 번호 : "))
-            input_status = input("Status : ")
-            str_input = input("종료 여부 : ")
-            if str_input == 'q' :
-                print("------------------")
-                parti = input("Input Your Name: ")
-               
-                for i in range(len(col_todo_list)) :
-                        if i < 4 :
-                            print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
-                        else :
-                            print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-                num_title = int(input("Title 번호 : "))
-                input_status = input("Status : ")
-                str_input = input("종료 여부 : ")
-                if str_input == 'x' :
-                        print("------------------")
-                        print("프로그램이 종료되었습니다.")
 
+while str_input=='c' :
+    for i in range(len(col_todo_list)) :
+        if i<4 :
+            print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
+        else :
+            print("{}. {}".format(i+1, col_todo_list[i]["title"]))
+    num_title = int(input("Title 번호 : "))
+    input_status = input("Status : ")
+    str_input = input("종료 여부 : ")
 
+while str_input=='x' :
+    print("------------------")
+    print("프로그램이 종료되었습니다.")
+    break
+   
 
-
+    
