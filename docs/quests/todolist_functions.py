@@ -22,9 +22,9 @@ todo_list_connect = mongo_connect('todos_list')
 # quiz_list_insert = mongo_insert(todo_list_connect, todo_list)    #  mongo_connect 함수 호출
 
 
-user_name_list = []
+user_name_list = [] # 참여자에 대한 list
 
-get_name_list=[]
+get_name_list=[] 
 
 parti_todos_list = []
 
@@ -40,21 +40,21 @@ while True:  # 전체 loop
     dic_parti= {}   # 참여자의 dictionary
     dic_parti["참여자"] = parti     #db에 '참여자'라는 key 값을 생성하고 parti 값을 value로 넣음
     user_name_list.append(dic_parti)    #user_name_list에 dic_parti안에 있는 key값과 value를 append하여 넣어줌
-    participants = mongo_connect('participants')
+    participants = mongo_connect('participants')  # participants collection에 연결
     user_list = mongo_insert(participants,user_name_list)
 
     while True :
-        col_todo_list = list(todo_list_connect.find({}))
-        for i in range(len(col_todo_list)) :
+        col_todo_list = list(todo_list_connect.find({}))  # todos_list collection에서 전체 내용 find
+        for i in range(len(col_todo_list)) : # 그 중 title 값만 가져오기 위한 for문
                 if i<4 :
                     print("{}. {}".format(i+1, col_todo_list[i]["title"]), end=" , ")
                 else :
                     print("{}. {}".format(i+1, col_todo_list[i]["title"]))
-        num_title = int(input("Title 번호 : "))
-        participants_connect = mongo_connect('participants') 
-        col_parti_list = list(participants_connect.find({}))
+        num_title = int(input("Title 번호 : "))  #  title 번호 입력 
+        participants_connect = mongo_connect('participants') # participants collection에 연결
+        col_parti_list = list(participants_connect.find({})) # participants collection의 전체 내용 find(참여자와 각각의 _id)
 
-        for i in range(len(col_parti_list)):
+        for i in range(len(col_parti_list)): 
              get_name_list.append(col_parti_list[i]["참여자"])
              pass
         
@@ -69,15 +69,17 @@ while True:  # 전체 loop
         # 그 변수를 dic_num에 연결한다.
         input_status = input("Status : ")
         
+        # participants_todos collection에 올리기 위한 dictionary
         dic_num=[{
              '_id' : somthing_id,
              'Title' : num_title,
              'Status' : input_status
         }]
 
-        participants_todos_connect = mongo_connect('participants_todos') 
+        participants_todos_connect = mongo_connect('participants_todos') # participants_todos collection에 연결
         update_todos = mongo_insert(participants_todos_connect,dic_num) #아 몰랑
         
+        # 종료 여부에 대한 반복문
         while True:
             str_input = input("종료 여부 : ")
             if str_input == "c" or str_input == "q" or str_input =="x":
