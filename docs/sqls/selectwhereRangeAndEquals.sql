@@ -1,6 +1,8 @@
+
+
 SELECT * 
 FROM Customers
-WHERE Country <> 'Germany' AND 'USA';
+WHERE Country NOT IN  ('Germany','USA');
 
 
 -- - 조건 Country 가 Germany 와 USA가 아닌 것들
