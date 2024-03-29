@@ -6,7 +6,7 @@ WHERE Country NOT IN  ('Germany','USA');
 
 
 -- - 조건 Country 가 Germany 와 USA가 아닌 것들
--- COUNT : 80
+-- COUNT : 67
 
 SELECT * 
 FROM Customers
