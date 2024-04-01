@@ -34,3 +34,9 @@ WHERE SupplierID IN (SELECT SupplierID
 						)
 ;
 -- Number of Records: 3
+
+--  SELECT SupplierID, COUNT(SupplierID),CategoryID  
+--     FROM Products
+--     GROUP BY CategoryID
+--     ORDER BY COUNT(SupplierID) DESC
+--     LIMIT 2;
