@@ -12,7 +12,7 @@ WHERE CustomerID IN (SELECT CustomerID
 -- Number of Records: 72 
 
 -- - Table : Orders
--- + 조건 : 주문 갯수가 20개 이상인 회사 LastName과 갯수
+-- 주문 건수 20개 이상을 받은 판매자 정보
 SELECT EmployeeID, Notes
 FROM Employees
 WHERE EmployeeID IN (SELECT EmployeeID 
