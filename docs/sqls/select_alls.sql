@@ -15,6 +15,7 @@ HAVING COUNT(Orders.CustomerID) <= 1
 
 
 -- + 조건 : 판매자 중 수익 낮은 순위자 3명 정보, 총 판매액
+SELECT Employees.EmployeeID, Employees.LastName, Employees.FirstName, sum(Products.Price*OrderDetails.Quantity) as TOTAL_PRICE
 FROM Employees
 LEFT JOIN Orders ON Employees.EmployeeID = Orders.EmployeeID
 LEFT JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID 
